@@ -1,11 +1,15 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
-
+from django.core.paginator import Paginator
 from .models import Blog
 
 def blog(request):
-    blogs = Blog.objects
-    return render(request, 'blog/blog.html', {'blogs': blogs})
+    blogs = Blog.objects 
+    blog_list = Blog.objects.all() #블로그 모든 글 대상
+    paginator = Paginator(blog_list, 5) #객체들을 개수대로 한 페이지로 자르기
+    page = request.GET.get('page') #request 페이지를 변수에 담기
+    posts = paginator.get_page(page) #request된 페이지를 얻어온 뒤 return
+    return render(request, 'blog/blog.html', {'blogs': blogs, 'posts':posts})
 
 def detail(request, blog_id):
     blog_detail = get_object_or_404(Blog, pk=blog_id)
