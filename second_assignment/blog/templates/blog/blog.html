@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
 
+<div class="container">
 {% for blog in posts %}
 <br>
-<div class="container">
   <div class="card">
     <div class="card-body">
       <h5 class="card-title">{{blog.title}}</h5>
@@ -11,9 +11,10 @@
       <p class="card-text">{{blog.summary}}<a href="{% url 'detail' blog.id %}"> .... Read more</a></p>
     </div>
   </div>
-</div>
 {% endfor %}
 <br>
+<div class="text-right"><a href="{% url 'new' %}"><button type="button" class="btn btn-info pull-right">New Post</button></a></div>
+</div>
 <nav>
   <ul class="pagination justify-content-center">
     {% if posts.has_previous %}
