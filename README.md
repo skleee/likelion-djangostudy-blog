@@ -6,3 +6,4 @@
 
 ## Blog Detail
 <img src="/blogdetail.png"></img>
+글 수정, 삭제 기능
