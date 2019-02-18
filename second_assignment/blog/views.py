@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from django.core.paginator import Paginator
 from .models import Blog
+from .form import BlogForm
 
 def blog(request):
     blogs = Blog.objects 
@@ -15,16 +16,16 @@ def detail(request, blog_id):
     blog_detail = get_object_or_404(Blog, pk=blog_id)
     return render(request, 'blog/detail.html', {'blog': blog_detail})
 
-def new(request):
-    return render(request, 'blog/new.html')
+# def new(request):
+#     return render(request, 'blog/new.html')
 
-def create(request):
-    blog = Blog()
-    blog.title = request.GET['title']
-    blog.body = request.GET['body']
-    blog.pub_date = timezone.datetime.now()
-    blog.save()
-    return redirect('/blog/' + str(blog.id))
+# def create(request):
+#     blog = Blog()
+#     blog.title = request.GET['title']
+#     blog.body = request.GET['body']
+#     blog.pub_date = timezone.datetime.now()
+#     blog.save()
+#     return redirect('/blog/' + str(blog.id))
 
 def edit(request, blog_id):
     blog = Blog.objects.get(pk=blog_id)
@@ -42,3 +43,15 @@ def delete(request, blog_id):
     blog = get_object_or_404(Blog, pk=blog_id)
     blog.delete()
     return redirect('home')
+
+def new(request):
+    if request.method == 'POST':
+        form = BlogForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.pub_date = timezone.now()
+            post.save()
+            return redirect('home')
+    else:
+        form = BlogForm()
+        return render(request, 'blog/new.html', {'form': form})

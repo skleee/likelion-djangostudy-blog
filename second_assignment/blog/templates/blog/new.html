@@ -3,7 +3,7 @@
 
 <br>
 <div class="container">
-  <form class="needs-validation" action="{% url 'create' %}" novalidate>
+  <form class="needs-validation" method="POST" novalidate>
   {% csrf_token %}
     <div class="mb-3">
       <h4>Title</h4>
